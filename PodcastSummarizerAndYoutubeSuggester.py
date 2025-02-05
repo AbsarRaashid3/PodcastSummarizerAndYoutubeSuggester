@@ -6,9 +6,9 @@ import spacy
 from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
-import os
-os.system("pip install git+https://github.com/openai/whisper.git")
-os.system("apt update && apt install -y ffmpeg")
+
+# Load NLP model
+nlp = spacy.load("en_core_web_sm")
 
 # Set API Key (Replace with your YouTube API Key)
 API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
@@ -38,7 +38,7 @@ def download_youtube_audio(url, output_path="downloads/"):
 
 def transcribe_audio(file_path):
     """Transcribes an audio file using Whisper."""
-    model = whisper.load_model("medium")  # Adjust model size as needed
+    model = whisper.load_model("base")  # Adjust model size as needed
     result = model.transcribe(file_path)
     return result["text"]
 
