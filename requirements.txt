@@ -8,7 +8,6 @@ transformers
 torch
 sentencepiece
 spacy
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0.tar.gz
 google-api-python-client
 yt-dlp
 git+https://github.com/openai/whisper.git
