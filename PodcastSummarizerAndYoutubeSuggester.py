@@ -3,13 +3,9 @@ import streamlit as st
 import yt_dlp
 import whisper
 import spacy
-import subprocess
 from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
-
-
-
 
 # Set API Key (Replace with your YouTube API Key)
 API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
@@ -17,58 +13,44 @@ API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
 def download_youtube_audio(url, output_path="downloads/"):
     """Downloads YouTube audio and converts it to MP3."""
     os.makedirs(output_path, exist_ok=True)
-    output_template = os.path.join(output_path, "%(title)s.%(ext)s")
-    
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': output_template,
+        'outtmpl': os.path.join(output_path, "%(title)s.%(ext)s"),
         'quiet': True,
-        'no_warnings': True
+        'no_warnings': True,
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
     }
-    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
-        downloaded_file = os.path.join(output_path, f"{info['title']}.{info['ext']}")
-    
-    new_file_path = os.path.join(output_path, f"{info['title']}.mp3")
-    audio = AudioSegment.from_file(downloaded_file)
-    audio.export(new_file_path, format="mp3")
-    os.remove(downloaded_file)  # Remove original file
-    
-    return new_file_path
+        return os.path.join(output_path, f"{info['title']}.mp3")
 
 def transcribe_audio(file_path):
     """Transcribes an audio file using Whisper."""
-    model = whisper.load_model("base")  # Adjust model size as needed
+    model = whisper.load_model("tiny", device="cpu")  # Use smaller model to avoid memory issues
     result = model.transcribe(file_path)
     return result["text"]
 
 def summarize_text(text):
     """Summarizes the transcribed text."""
-    summarizer = pipeline("summarization", model="google/long-t5-tglobal-base", device=-1)
+    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
     summary = summarizer(text, max_length=250, min_length=50, do_sample=False, num_beams=5)
     return summary[0]['summary_text']
 
-# ✅ Ensure SpaCy model is downloaded at runtime
-@st.cache_resource
-def load_spacy_model():
-    try:
-        return spacy.load("en_core_web_sm")
-    except OSError:
-        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
-        return spacy.load("en_core_web_sm")
-
-nlp = load_spacy_model()
+spacy.cli.download("en_core_web_sm")  # Ensure spaCy model is available
+nlp = spacy.load("en_core_web_sm")
 
 def extract_keywords(text):
     """Extracts keywords from text using spaCy."""
-    doc = nlp(text)  # ✅ Use the preloaded model
+    doc = nlp(text)
     keywords = list(set(ent.text for ent in doc.ents))
     return keywords
 
 def search_podcasts(keywords, max_results=5):
     """Searches for relevant podcasts on YouTube."""
-    API_KEY = "YOUR_YOUTUBE_API_KEY"  # Replace with your key
     youtube = build("youtube", "v3", developerKey=API_KEY)
     query = " ".join(keywords) + " podcast"
     request = youtube.search().list(part="snippet", q=query, type="video", maxResults=max_results, videoDuration="long")
@@ -91,10 +73,10 @@ if option == "Upload Audio File":
         summary = summarize_text(transcript)
         keywords = extract_keywords(transcript)
         suggestions = search_podcasts(keywords)
-
+        
         st.subheader("Podcast Summary:")
         st.write(summary)
-
+        
         st.subheader("Suggested Podcasts:")
         for title, url in suggestions:
             st.markdown(f"- [{title}]({url})")
@@ -107,10 +89,10 @@ elif option == "YouTube Link":
         summary = summarize_text(transcript)
         keywords = extract_keywords(transcript)
         suggestions = search_podcasts(keywords)
-
+        
         st.subheader("Podcast Summary:")
         st.write(summary)
-
+        
         st.subheader("Suggested Podcasts:")
         for title, url in suggestions:
             st.markdown(f"- [{title}]({url})")
