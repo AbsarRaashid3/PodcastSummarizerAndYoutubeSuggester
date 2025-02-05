@@ -7,8 +7,7 @@ from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
 
-# Load NLP model
-nlp = spacy.load("en_core_web_sm")
+
 
 # Set API Key (Replace with your YouTube API Key)
 API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
