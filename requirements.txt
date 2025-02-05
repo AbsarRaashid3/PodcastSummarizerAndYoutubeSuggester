@@ -1,6 +1,5 @@
 streamlit
 pydub
-pytube
 whisper
 openai
 nltk
@@ -10,5 +9,6 @@ sentencepiece
 spacy
 google-api-python-client
 yt-dlp
+ffmpeg-python
+protobuf==3.20.*
 git+https://github.com/openai/whisper.git
-ffmpeg
