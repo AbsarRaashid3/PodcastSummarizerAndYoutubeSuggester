@@ -7,33 +7,45 @@ from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
 
-
+# Load NLP model
+nlp = spacy.load("en_core_web_sm")
 
 # Set API Key (Replace with your YouTube API Key)
 API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
 
+import re
+
+def sanitize_filename(filename):
+    return re.sub(r'[\\/*?:"<>|]', "", filename)  # Removes invalid characters
+
 def download_youtube_audio(url, output_path="downloads/"):
     """Downloads YouTube audio and converts it to MP3."""
     os.makedirs(output_path, exist_ok=True)
-    output_template = os.path.join(output_path, "%(title)s.%(ext)s")
     
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': output_template,
+        'outtmpl': os.path.join(output_path, "%(id)s.%(ext)s"),  # Use video ID instead of title
         'quiet': True,
         'no_warnings': True
     }
     
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
-        downloaded_file = os.path.join(output_path, f"{info['title']}.{info['ext']}")
+        downloaded_file = info["requested_downloads"][0]["filepath"]  # Get actual downloaded file
     
-    new_file_path = os.path.join(output_path, f"{info['title']}.mp3")
-    audio = AudioSegment.from_file(downloaded_file)
-    audio.export(new_file_path, format="mp3")
-    os.remove(downloaded_file)  # Remove original file
+    if not os.path.exists(downloaded_file):
+        raise FileNotFoundError(f"Download failed: {downloaded_file} not found.")
     
+    new_file_path = os.path.splitext(downloaded_file)[0] + ".mp3"
+    
+    if not downloaded_file.endswith(".mp3"):
+        audio = AudioSegment.from_file(downloaded_file)
+        audio.export(new_file_path, format="mp3")
+        os.remove(downloaded_file)
+
     return new_file_path
+
+
 
 def transcribe_audio(file_path):
     """Transcribes an audio file using Whisper."""
