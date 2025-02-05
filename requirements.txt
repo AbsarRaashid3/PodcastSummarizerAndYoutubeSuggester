@@ -1,0 +1,10 @@
+streamlit
+pydub
+pytube
+whisper
+openai
+nltk
+transformers
+spacy
+google-api-python-client
+yt-dlp
