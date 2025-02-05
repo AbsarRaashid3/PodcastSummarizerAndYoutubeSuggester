@@ -7,44 +7,49 @@ from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
 
+
+
 # Set API Key (Replace with your YouTube API Key)
 API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
 
 def download_youtube_audio(url, output_path="downloads/"):
     """Downloads YouTube audio and converts it to MP3."""
     os.makedirs(output_path, exist_ok=True)
+    output_template = os.path.join(output_path, "%(title)s.%(ext)s")
+    
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': os.path.join(output_path, "%(title)s.%(ext)s"),
+        'outtmpl': output_template,
         'quiet': True,
-        'no_warnings': True,
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
+        'no_warnings': True
     }
+    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
-        return os.path.join(output_path, f"{info['title']}.mp3")
+        downloaded_file = os.path.join(output_path, f"{info['title']}.{info['ext']}")
+    
+    new_file_path = os.path.join(output_path, f"{info['title']}.mp3")
+    audio = AudioSegment.from_file(downloaded_file)
+    audio.export(new_file_path, format="mp3")
+    os.remove(downloaded_file)  # Remove original file
+    
+    return new_file_path
 
 def transcribe_audio(file_path):
     """Transcribes an audio file using Whisper."""
-    model = whisper.load_model("tiny", device="cpu")  # Use smaller model to avoid memory issues
+    model = whisper.load_model("base")  # Adjust model size as needed
     result = model.transcribe(file_path)
     return result["text"]
 
 def summarize_text(text):
     """Summarizes the transcribed text."""
-    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    summarizer = pipeline("summarization", model="google/long-t5-tglobal-base", device=-1)
     summary = summarizer(text, max_length=250, min_length=50, do_sample=False, num_beams=5)
     return summary[0]['summary_text']
 
-spacy.cli.download("en_core_web_sm")  # Ensure spaCy model is available
-nlp = spacy.load("en_core_web_sm")
-
 def extract_keywords(text):
     """Extracts keywords from text using spaCy."""
+    nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
     keywords = list(set(ent.text for ent in doc.ents))
     return keywords
