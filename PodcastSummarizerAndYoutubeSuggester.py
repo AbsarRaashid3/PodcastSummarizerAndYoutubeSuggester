@@ -6,6 +6,9 @@ import spacy
 from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
+import os
+os.system("pip install git+https://github.com/openai/whisper.git")
+os.system("apt update && apt install -y ffmpeg")
 
 # Set API Key (Replace with your YouTube API Key)
 API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
