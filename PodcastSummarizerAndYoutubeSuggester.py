@@ -3,9 +3,11 @@ import streamlit as st
 import yt_dlp
 import whisper
 import spacy
+import subprocess
 from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
+
 
 
 
@@ -47,15 +49,26 @@ def summarize_text(text):
     summary = summarizer(text, max_length=250, min_length=50, do_sample=False, num_beams=5)
     return summary[0]['summary_text']
 
+# ✅ Ensure SpaCy model is downloaded at runtime
+@st.cache_resource
+def load_spacy_model():
+    try:
+        return spacy.load("en_core_web_sm")
+    except OSError:
+        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+        return spacy.load("en_core_web_sm")
+
+nlp = load_spacy_model()
+
 def extract_keywords(text):
     """Extracts keywords from text using spaCy."""
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp(text)
+    doc = nlp(text)  # ✅ Use the preloaded model
     keywords = list(set(ent.text for ent in doc.ents))
     return keywords
 
 def search_podcasts(keywords, max_results=5):
     """Searches for relevant podcasts on YouTube."""
+    API_KEY = "YOUR_YOUTUBE_API_KEY"  # Replace with your key
     youtube = build("youtube", "v3", developerKey=API_KEY)
     query = " ".join(keywords) + " podcast"
     request = youtube.search().list(part="snippet", q=query, type="video", maxResults=max_results, videoDuration="long")
@@ -78,10 +91,10 @@ if option == "Upload Audio File":
         summary = summarize_text(transcript)
         keywords = extract_keywords(transcript)
         suggestions = search_podcasts(keywords)
-        
+
         st.subheader("Podcast Summary:")
         st.write(summary)
-        
+
         st.subheader("Suggested Podcasts:")
         for title, url in suggestions:
             st.markdown(f"- [{title}]({url})")
@@ -94,10 +107,10 @@ elif option == "YouTube Link":
         summary = summarize_text(transcript)
         keywords = extract_keywords(transcript)
         suggestions = search_podcasts(keywords)
-        
+
         st.subheader("Podcast Summary:")
         st.write(summary)
-        
+
         st.subheader("Suggested Podcasts:")
         for title, url in suggestions:
             st.markdown(f"- [{title}]({url})")
