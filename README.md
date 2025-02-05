@@ -1,30 +1,48 @@
-**Podcast Summarizer & YouTube Suggester**
+## Podcast Summarizer & YouTube Suggester ##
 
-🎙️ **About the Project**
+This repository implements a Streamlit-based application that transcribes, summarizes, and analyzes podcasts. Users can upload an audio file or provide a YouTube link, and the application will generate a summary and suggest related podcasts using YouTube's API.
 
-This Podcast Summarizer & YouTube Suggester is a Streamlit-based web application that allows users to:
+## ** Project Overview ** ##
 
-Upload an audio file or provide a YouTube link to extract podcast content.
+The objective of this project is to:
 
-Transcribe the podcast audio using OpenAI's Whisper model.
+Extract audio from a podcast or YouTube video.
 
-Summarize the podcast using the Google Long-T5 model.
+Transcribe the speech to text using OpenAI's Whisper model.
 
-Extract relevant keywords from the podcast using spaCy NLP.
+Generate a concise summary using a Transformer-based model.
 
-Suggest related YouTube podcasts based on the extracted keywords.
+Extract relevant keywords from the transcribed text.
 
-🚀 **Features**
+Search YouTube for related podcast recommendations based on extracted keywords.
 
-YouTube Audio Extraction: Downloads audio from YouTube videos.
+## ** Features ** ##
 
-Audio Transcription: Converts audio to text using Whisper.
+Audio Processing & Transcription
 
-Summarization: Summarizes transcribed text with a transformer model.
+Converts YouTube videos into audio.
 
-Keyword Extraction: Identifies key topics using spaCy NLP.
+Supports MP3 file uploads.
 
-YouTube Podcast Recommendations: Finds similar podcasts on YouTube.
+Uses Whisper for high-quality speech-to-text conversion.
 
-User-friendly Interface: Built with Streamlit for an easy-to-use UI.
+Summarization & Keyword Extraction
+
+Summarizes long podcast transcripts using a Transformer model.
+
+Extracts important keywords using spaCy NLP.
+
+YouTube Podcast Recommendation
+
+Searches for relevant podcasts on YouTube.
+
+Uses Google API to suggest similar podcast videos.
+
+User-Friendly Streamlit UI
+
+Allows users to upload files or enter YouTube URLs.
+
+Displays transcriptions, summaries, and suggested content.
+
+
 
