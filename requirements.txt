@@ -10,3 +10,8 @@ spacy
 google-api-python-client
 yt-dlp
 git+https://github.com/openai/whisper.git
+spacy==3.1.0
+streamlit==1.7.0
+yt-dlp==2021.12.1
+transformers==4.13.0
+# Add other required libraries...
