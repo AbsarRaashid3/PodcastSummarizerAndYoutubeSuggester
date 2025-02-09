@@ -16,12 +16,7 @@ DEEPGRAM_API_KEY= st.secrets["DEEPGRAM_API_KEY"]
 # Set environment variables
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-
-model_name = "en_core_web_sm"
-if not spacy.util.is_package(model_name):
-    os.system(f"python -m spacy download {model_name}")
-
-nlp = spacy.load(model_name)
+nlp = spacy.load("en_core_web_sm")
 
 # Initialize session state
 if "summary" not in st.session_state:
