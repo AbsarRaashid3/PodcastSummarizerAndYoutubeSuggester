@@ -16,8 +16,9 @@ try:
 except OSError:
     subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
     nlp = spacy.load("en_core_web_sm")
-API_KEY = st.secrets["API_KEY"]
-DEEPGRAM_API_KEY= st.secrets["DEEPGRAM_API_KEY"]
+    
+API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
+DEEPGRAM_API_KEY = "6672021d942acd8ec7df300c71a6b9b56abf4d0b"
 # Set environment variables
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
