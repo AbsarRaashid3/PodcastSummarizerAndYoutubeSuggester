@@ -4,12 +4,9 @@ whisper
 openai
 nltk
 transformers
-torch
+torch>=2.0.0
 sentencepiece
 spacy
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1.tar.gz
 google-api-python-client
 yt-dlp
 git+https://github.com/openai/whisper.git
-
-
