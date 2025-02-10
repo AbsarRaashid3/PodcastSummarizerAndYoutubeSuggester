@@ -22,7 +22,7 @@ DEEPGRAM_API_KEY = "6672021d942acd8ec7df300c71a6b9b56abf4d0b"
 # Set environment variables
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-nlp = spacy.load("en_core_web_sm")
+
 
 # Initialize session state
 if "summary" not in st.session_state:
