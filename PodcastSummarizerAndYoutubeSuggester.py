@@ -2,15 +2,20 @@ import os
 import streamlit as st
 import yt_dlp
 import whisper
-import spacy
 from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
 import re
 import requests
-import subprocess
 import streamlit as st
+import spacy
+import subprocess
 
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
 API_KEY = st.secrets["API_KEY"]
 DEEPGRAM_API_KEY= st.secrets["DEEPGRAM_API_KEY"]
 # Set environment variables
