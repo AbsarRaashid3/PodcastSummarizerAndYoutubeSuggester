@@ -17,7 +17,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
-    os.system("python -m spacy download en_core_web_sm")
+    os.system("pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0.tar.gz")
     nlp = spacy.load("en_core_web_sm")
 
 # Set API Key (Replace with your YouTube API Key)
