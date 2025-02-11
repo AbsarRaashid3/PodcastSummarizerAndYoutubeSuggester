@@ -2,27 +2,27 @@ import os
 import streamlit as st
 import yt_dlp
 import whisper
+import spacy
 from pydub import AudioSegment
 from transformers import pipeline
 from googleapiclient.discovery import build
 import re
 import requests
-import streamlit as st
-import spacy
 import subprocess
 
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
-    nlp = spacy.load("en_core_web_sm")
-    
-API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
-DEEPGRAM_API_KEY = "6672021d942acd8ec7df300c71a6b9b56abf4d0b"
 # Set environment variables
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
+# Load NLP model
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    os.system("python -m spacy download en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 
+# Set API Key (Replace with your YouTube API Key)
+API_KEY = "AIzaSyAWQ-Q9PJxOwXirog5-3zV9_PvakwCKxh8"
+DEEPGRAM_API_KEY = "6672021d942acd8ec7df300c71a6b9b56abf4d0b" # Replace with your actual key
 
 # Initialize session state
 if "summary" not in st.session_state:
