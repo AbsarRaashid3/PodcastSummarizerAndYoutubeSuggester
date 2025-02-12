@@ -1,4 +1,4 @@
-### Podcast Summarizer & YouTube Suggester 
+# Podcast Summarizer & YouTube Suggester 
 
 This repository implements a Streamlit-based application that transcribes, summarizes, and analyzes podcasts. Users can upload an audio file or provide a YouTube link, and the application will generate a summary and suggest related podcasts using YouTube's API.
 
