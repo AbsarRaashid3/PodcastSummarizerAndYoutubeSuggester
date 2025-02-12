@@ -16,7 +16,7 @@ Extract relevant keywords from the transcribed text.
 
 Search YouTube for related podcast recommendations based on extracted keywords.
 
-## ** Features 
+##  Features 
 
 Audio Processing & Transcription
 
