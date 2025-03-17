@@ -1,34 +1,91 @@
-# **Podcast Summarizer & YouTube Suggester** 🚀 
+# 🎙️ Podcast Summarizer & YouTube Suggester
+**A Streamlit-based web application that allows users to upload a podcast audio file or provide a YouTube link to get a summary, keyword extraction, and relevant podcast suggestions. The project leverages AI-powered speech-to-text, NLP, and summarization models to deliver concise podcast insights.**
 
-This repository implements a Streamlit-based application that transcribes, summarizes, and analyzes podcasts. Users can upload an audio file or provide a YouTube link, and the application will generate a summary and suggest related podcasts using YouTube's API.
+## Features
+🎧 Podcast & YouTube Audio Processing
 
-## 🔍Project Overview 
+### Upload an MP3 file or provide a YouTube link.
+Uses yt_dlp to download and convert YouTube audio.
+### 📝 AI-Based Transcription
 
-### ✨The objective of this project is to:
+Uses OpenAI’s Whisper model to transcribe the audio.
+### 📜 Summarization
 
-* Extract audio from a podcast or YouTube video.
-* Transcribe the speech to text using OpenAI's Whisper model.
-* Generate a concise summary using a Transformer-based model.
-* Extract relevant keywords from the transcribed text.
-*Search YouTube for related podcast recommendations based on extracted keywords.
+Summarizes the podcast using the Google Long-T5 model.
+### 🔍 Keyword Extraction & Podcast Recommendations
 
-##  ⭐Features 
+Extracts key topics using spaCy.
+Searches for related long-form podcasts on YouTube using the YouTube API.
+### 🔊 Text-to-Speech (TTS) Playback
 
-* Audio Processing & Transcription
-* Converts YouTube videos into audio.
-* Supports MP3 file uploads.
-* Uses Whisper for high-quality speech-to-text conversion.
-* Summarization & Keyword Extraction
-* Summarizes long podcast transcripts using a Transformer model.
-* Extracts important keywords using spaCy NLP.
-* YouTube Podcast Recommendation
-* Searches for relevant podcasts on YouTube.
-* Uses Google API to suggest similar podcast videos.
-* User-Friendly Streamlit UI
+Uses Deepgram TTS API to convert the summary into speech.
+Plays the summary audio using ffplay.
+🎨 User-Friendly Web Interface
 
-### Allows users to upload files or enter YouTube URLs.
+**Built using Streamlit for an interactive UI.**
 
-### Displays transcriptions, summaries, and suggested content.
+## 🛠️ Installation & Setup
+```
+1️⃣ Clone the Repository
+git clone https://github.com/absarraashid3/PodcastSummarizerAndYoutubeSuggester.git
+cd PodcastSummarizerAndYoutubeSuggester
+
+2️⃣ Install Dependencies
+Ensure you have Python 3.8+ installed. Then run:
+pip install -r requirements.txt
+
+3️⃣ Install SpaCy Model
+python3 -m spacy download en_core_web_sm
+
+4️⃣ Set API Keys
+Create a .env file in the project root and add:
+YOUTUBE_API_KEY=your_youtube_api_key_here
+DEEPGRAM_API_KEY=your_deepgram_api_key_here
+
+5️⃣ Run the Application
+python -m streamlit run PodcastSummarizerAndYoutubeSuggester.py
+
+```
+## 🖥️ Usage
+### 1️⃣ Launch the app using the command above.
+### 2️⃣ Select an input type:
+
+**Upload an MP3 file.**
+**Enter a YouTube URL.**
+### 3️⃣ Get the transcript & summary.
+### 4️⃣ View suggested podcasts based on extracted keywords.
+### 5️⃣ Listen to the summary via text-to-speech.
+
+## 📦 Project Structure
+```
+📂 PodcastSummarizerAndYoutubeSuggester/
+├── 📜 requirements.txt
+├── 📜 PodcastSummarizerAndYoutubeSuggester.py
+├── 📂 downloads/ (stores downloaded audio files)
+├── 📂 models/ (stores NLP models if needed)
+└── 📜 README.md
+```
+
+## 🛠️ Tech Stack
+```
+Python
+Streamlit (Frontend UI)
+Whisper AI (Speech-to-Text)
+spaCy (Keyword Extraction)
+Hugging Face Transformers (Summarization Model)
+YouTube API (Podcast Search)
+Deepgram API (Text-to-Speech)
+pydub (Audio Processing)
+```
+
+## 🔥 Future Enhancements
+**✅ Improve multi-language support for transcriptions.**
+**✅ Add user preferences for podcast recommendations.**
+**✅ Enhance UI/UX with better design.**
 
 
+## 📩 Contact
+For queries, reach out via:
+
+**Email: absarrashid3@gmail.com**
 
