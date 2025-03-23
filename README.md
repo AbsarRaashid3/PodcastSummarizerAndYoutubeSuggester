@@ -79,9 +79,9 @@ pydub (Audio Processing)
 ```
 
 ## 🔥 Future Enhancements
-**✅ Improve multi-language support for transcriptions.**
-**✅ Add user preferences for podcast recommendations.**
-**✅ Enhance UI/UX with better design.**
+**✅ Improve multi-language support for transcriptions.** <br>
+**✅ Add user preferences for podcast recommendations.** <br>
+**✅ Enhance UI/UX with better design.** <br>
 
 
 ## 📩 Contact
